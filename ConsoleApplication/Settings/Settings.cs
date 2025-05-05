@@ -11,20 +11,12 @@ public sealed class Settings
 
   // Source log files settings
   public required string LogFolder { get; set; }
-  public required string ConfigsFolder { get; set; }
   public required string LogFile { get; set; }
   public required LogLevel LogLevel { get; set; }
   public required int UpdateDelay { get; set; }
 
   // Additional settings
-  public required List<string> ConfigurationFiles { get; set; }
-}
 
-public sealed class WindowPosition
-{
-  public int Left { get; set; } = 0;
-  public int Top { get; set; } = 0;
-  public int Width { get; set; } = 800;
-  public int Height { get; set; } = 600;
+
 }
 

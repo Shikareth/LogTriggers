@@ -1,4 +1,6 @@
 ﻿using ConsoleApplication.Enums;
+using ConsoleApplication.Events;
+
 using System.Text.RegularExpressions;
 
 namespace ConsoleApplication.Triggers
