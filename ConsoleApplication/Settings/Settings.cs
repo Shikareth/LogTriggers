@@ -5,7 +5,7 @@ namespace ConsoleApplication
 
   public sealed class Settings
   {
-    public required BrowserType Browser { get; set; }
+    public BrowserType Browser { get; set; }
     public required string SquadMapSite { get; set; }
     public required string LogFolder { get; set; }
     public required string ConfigsFolder { get; set; }
