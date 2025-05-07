@@ -18,8 +18,6 @@ namespace ConsoleApplication;
 public class Program
 {
   private const string _title = "LogAnalyzer";
-  private static int _currentLine = 0;
-  private static int _lastLine = 0;
   public static bool Enabled { get; set; } = true;
   public static WebDriver? Driver { get; set; }
   public static LASettings? Settings { get; set; }
@@ -100,8 +98,6 @@ public class Program
             break;
 
           currentFile.ReadNext();
-
-          // TODO: change param to LAFileReader
           LAEventManager.Parse(currentFile);
         }
 
