@@ -3,7 +3,7 @@
 namespace ConsoleApplication.Triggers
 {
 
-  public class Config : ICloneable
+  public class LAConfig : ICloneable
   {
     public required MatchingType Mode { get; set; }
     public required string Value { get; set; }

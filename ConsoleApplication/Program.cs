@@ -8,6 +8,7 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 
+using System.Collections;
 using System.Text;
 
 #pragma warning disable CS8601, CS8602, CS8603, CS8604
@@ -21,7 +22,8 @@ public class Program
   private static int _lastLine = 0;
   public static bool Enabled { get; set; } = true;
   public static WebDriver? Driver { get; set; }
-  public static Settings? Settings { get; set; }
+  public static LASettings? Settings { get; set; }
+  private static List<LAFileReader> Files { get; set; } = [];
 
   public static void Main(string[] args)
   {
@@ -49,15 +51,16 @@ public class Program
       // Enable throwing error on invalid configuration
       Action<BinderOptions> getOptions = (o) => o.ErrorOnUnknownConfiguration = true;
 
-      Settings = appsettings.GetRequiredSection("Settings").Get<Settings>(getOptions);
-      EventManager.Events = appsettings.GetRequiredSection("Events").Get<List<Event>>(getOptions);
+      Settings = appsettings.GetRequiredSection("Settings").Get<LASettings>(getOptions);
+      LAEventManager.Events = appsettings.GetRequiredSection("Events").Get<List<LAEvent>>(getOptions);
+      LAEventManager.Init();
 
       // Build paths
-      var logFilePath = Path.Combine([Settings.LogFolder, Settings.LogFile]);
+      //var logFilePath = Path.Combine([Settings.LogFolder, Settings.LogFile]);
 
-      // Check current log file
-      if (!File.Exists(logFilePath))
-        throw new Exception($"File does not exist: {logFilePath}");
+      //// Check current log file
+      //if (!File.Exists(logFilePath))
+      //  throw new Exception($"File does not exist: {logFilePath}");
 
       // Setup Selenium browser
       Driver = Settings.Browser switch
@@ -77,59 +80,34 @@ public class Program
         Driver.Navigate().GoToUrl(Settings.BrowserEntrySite);
       }
 
-      // Read log file
-      using (var fs = File.Open(logFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+      // Open files
+      foreach (var file in Settings.LogFiles)
       {
-        using (var sr = new StreamReader(fs, Encoding.Default))
-        {
-          var fileWasUpdated = false;
+        var filereader = new LAFileReader(file);
+        filereader.Open();
+        filereader.ReadNext();
 
-          while (Enabled)
-          {
-            // Check if file has regenerated -> is shorter then last time
-            if (fs.Position > fs.Length)
-            {
-              var sb = new StringBuilder();
-
-              var msg = "File was regenerated! Reading from start...";
-              sb.AppendLine(new string('*', msg.Length));
-              sb.AppendLine(msg);
-              sb.AppendLine(new string('*', msg.Length));
-
-              ConsoleWrite(sb.ToString(), ConsoleColor.Yellow, ConsoleColor.Black);
-
-              fs.Seek(0, SeekOrigin.Begin);
-            }
-
-            // Read log file
-            while (!sr.EndOfStream)
-            {
-              var line = sr.ReadLine();
-              EventManager.Parse(line, ++_currentLine);
-
-              fileWasUpdated = true;
-            }
-
-            // Act on fulfilled triggers - TODO: from config as abstraction
-            var layerChanged = EventManager.EventsBuffered.LastOrDefault(x => x.Label == "LayerChanged");
-            if (layerChanged != null && !layerChanged.Consumed)
-            {
-              layerChanged.Consume();
-            }
-
-            // Loop status
-            if (fileWasUpdated)
-            {
-              Console.Title = $"{_title} [{_currentLine}:+{_currentLine - _lastLine}]";
-              _lastLine = _currentLine;
-            }
-
-            // Deleay read to save resources
-            Thread.Sleep(Settings.UpdateDelay);
-          }
-        }
+        Files.Add(filereader);
       }
 
+      while (Enabled)
+      {
+        while (true)
+        {
+          // Check if there is anything to read
+          var currentFile = Files.Where(x => x.CanRead())?.MinBy(x => x.CurrentTimestamp);
+          if (currentFile == null)
+            break;
+
+          currentFile.ReadNext();
+
+          // TODO: change param to LAFileReader
+          LAEventManager.Parse(currentFile);
+        }
+
+        // Deleay read to save resources
+        Thread.Sleep(Settings.UpdateDelay);
+      }
     }
     catch (Exception ex)
     {
@@ -137,6 +115,10 @@ public class Program
     }
     finally
     {
+      // Close files
+      foreach (var file in Files)
+        file.Close();
+      
       //Driver?.Quit();
       Info("Press any key to exit ...");
     }
@@ -162,7 +144,7 @@ public class Program
     if (Settings.LogLevel >= Enums.LogLevel.DEBUG)
       ConsoleWrite("[DEBUG] " + text, bgcolor, fgcolor);
   }
-  private static void ConsoleWrite(string text, ConsoleColor bgcolor = ConsoleColor.Black, ConsoleColor fgcolor = ConsoleColor.White)
+  public static void ConsoleWrite(string text, ConsoleColor bgcolor = ConsoleColor.Black, ConsoleColor fgcolor = ConsoleColor.White)
   {
     var lastBG = Console.BackgroundColor;
     var lastFG = Console.ForegroundColor;
