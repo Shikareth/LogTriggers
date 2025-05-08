@@ -39,10 +39,10 @@ public class LAFileReader
     Open();
   }
 
-  public string? ReadNext()
+  public void ReadNext()
   {
     if (FileStream == null || StreamReader == null)
-      return null;
+      return;
 
     // Check if file has regenerated -> is shorter then last time
     if (FileStream.Position > FileStream.Length)
@@ -61,14 +61,15 @@ public class LAFileReader
 
     // Read log file
     if (StreamReader.EndOfStream)
-      return null;
+      return;
 
     CurrentLine = StreamReader.ReadLine();
+    if (string.IsNullOrEmpty(CurrentLine))
+      return;
+
     ParseTimestamp(CurrentLine);
 
     CurrentLineNumber++;
-
-    return CurrentLine;
   }
   public bool CanRead()
   {
@@ -86,23 +87,20 @@ public class LAFileReader
     FileStream.Close();
   }
 
-  private DateTime? ParseTimestamp(string line)
+  private void ParseTimestamp(string line)
   {
-    // 2025-04-13 00:00:54.0802 [  4]  INFO - ResourceMonitorService -          -              - Nothing done for 10.000 seconds run worker Task by timer - 
-    var regex = new Regex(Program.Settings.TimestampFilter);
+    var regex = new Regex(FileInfo.TimestampFormat ?? Program.Settings.TimestampFilter);
 
     var match = regex.Match(line);
     if (!match.Success)
     {
       Program.Debug($"Could not find Timestamp: [{FileInfo.Label}] {CurrentLine} @ {CurrentLineNumber}");
-      return null;
+      return;
     }
 
     if (DateTime.TryParseExact(match.Value, Program.Settings.TimestampFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out DateTime timestamp))
       CurrentTimestamp = timestamp;
     else
       Program.Debug($"Could not parse Timestamp: [{FileInfo.Label}] {CurrentLine} @ {CurrentLineNumber}");
-
-    return CurrentTimestamp;
   }
 }
