@@ -44,21 +44,8 @@ public class LAFileReader
     if (FileStream == null || StreamReader == null)
       return;
 
-    // Check if file has regenerated -> is shorter then last time
-    if (FileStream.Position > FileStream.Length)
-    {
-      var sb = new StringBuilder();
-
-      var msg = "File was regenerated! Reading from start...";
-      sb.AppendLine(new string('*', msg.Length));
-      sb.AppendLine(msg);
-      sb.AppendLine(new string('*', msg.Length));
-
-      Program.ConsoleWrite(sb.ToString(), ConsoleColor.Yellow, ConsoleColor.Black);
-
-      FileStream.Seek(0, SeekOrigin.Begin);
-    }
-
+    CheckFileLength();
+ 
     // Read log file
     if (StreamReader.EndOfStream)
       return;
@@ -87,6 +74,25 @@ public class LAFileReader
     FileStream.Close();
   }
 
+
+  private void CheckFileLength()
+  {
+    // Check if file has regenerated -> is shorter then last time
+    if (FileStream.Position > FileStream.Length)
+    {
+      var sb = new StringBuilder();
+
+      var msg = "File was regenerated! Reading from start...";
+      sb.AppendLine(new string('*', msg.Length));
+      sb.AppendLine(msg);
+      sb.AppendLine(new string('*', msg.Length));
+
+      Program.ConsoleWrite(sb.ToString(), ConsoleColor.Yellow, ConsoleColor.Black);
+
+      FileStream.Seek(0, SeekOrigin.Begin);
+    }
+
+  }
   private void ParseTimestamp(string line)
   {
     var regex = new Regex(FileInfo.TimestampFormat ?? Program.Settings.TimestampFilter);
