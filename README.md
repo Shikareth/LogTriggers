@@ -7,9 +7,9 @@ Holds global configuration. Available options:
 | TimestampFormat | yes  | [DateTime Format](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings) |
 | TimestampFilter | yes  | Regex to extract sub-string from line. Must contain **ONLY** one capture group (in braces) |
 | UpdateDelay | yes  | Delay after last read in milliseconds |
-| Browser | no | Do not use |
-| BrowserEntrySite | no | Do not use |
-| BrowserPosition | no | look [LAWindowPosition](https://github.com/Shikareth/LogTriggers/blob/main/ConsoleApplication/Settings/LAWindowPosition.cs) |
+| Browser | no | **Do not use** |
+| BrowserEntrySite | no | **Do not use** |
+| BrowserPosition | no | [LAWindowPosition](https://github.com/Shikareth/LogTriggers/blob/main/ConsoleApplication/Settings/LAWindowPosition.cs) |
 | LogFolder | no | Main path to files (overridden by file config) |
 | LogFiles| yes | List of files to monitor |
 
