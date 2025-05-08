@@ -95,7 +95,7 @@ public class LAFileReader
   }
   private void ParseTimestamp(string line)
   {
-    var regex = new Regex(FileInfo.TimestampFormat ?? Program.Settings.TimestampFilter);
+    var regex = new Regex(FileInfo.TimestampFilter ?? Program.Settings.TimestampFilter);
 
     var match = regex.Match(line);
     if (!match.Success)
@@ -104,9 +104,14 @@ public class LAFileReader
       return;
     }
 
-    if (DateTime.TryParseExact(match.Value, Program.Settings.TimestampFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out DateTime timestamp))
+    if (DateTime.TryParseExact(match.Value, FileInfo.TimestampFormat ?? Program.Settings.TimestampFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out DateTime timestamp))
       CurrentTimestamp = timestamp;
     else
       Program.Debug($"Could not parse Timestamp: [{FileInfo.Label}] {CurrentLine} @ {CurrentLineNumber}");
+  }
+
+  public override string ToString()
+  {
+    return $"{CurrentTimestamp} [{FileInfo.Label}@{CurrentLineNumber}]";
   }
 }
