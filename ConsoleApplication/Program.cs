@@ -32,7 +32,7 @@ public class Program
     {
       Console.WriteLine($"{args.SpecialKey} pressed. Cleaning up ...");
 
-      // Set the Cancel property to true to prevent the process from terminating.
+      // Set the Cancel property to true to prevent the process from terminating prematurely.
       args.Cancel = true;
       Program.Enabled = false;
     };
@@ -52,13 +52,6 @@ public class Program
       Settings = appsettings.GetRequiredSection("Settings").Get<LASettings>(getOptions);
       LAEventManager.Events = appsettings.GetRequiredSection("Events").Get<List<LAEvent>>(getOptions);
       LAEventManager.Init();
-
-      // Build paths
-      //var logFilePath = Path.Combine([Settings.LogFolder, Settings.LogFile]);
-
-      //// Check current log file
-      //if (!File.Exists(logFilePath))
-      //  throw new Exception($"File does not exist: {logFilePath}");
 
       // Setup Selenium browser
       Driver = Settings.Browser switch
@@ -115,7 +108,6 @@ public class Program
       foreach (var file in Files)
         file.Close();
       
-      //Driver?.Quit();
       Info("Press any key to exit ...");
     }
   }
