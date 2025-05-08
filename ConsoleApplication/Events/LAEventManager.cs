@@ -29,11 +29,6 @@ public static class LAEventManager
       _maxEventLabelLength = Events.Select(x => x.Label).OrderByDescending(x => x.Length).First().Length;
   }
 
-  [Obsolete]
-  public static void Parse(string line, int lineIndex)
-  {
-    CheckEvents(line, lineIndex);
-  }
   public static void Parse(LAFileReader fileReader)
   {
     if (fileReader.CurrentLine == null)
@@ -50,21 +45,6 @@ public static class LAEventManager
     return EventsBuffered.LastOrDefault(x => x.Label == label && !x.Consumed);
   }
 
-  [Obsolete]
-  private static void CheckEvents(string line, int lineIndex)
-  {
-    foreach (var e in Events)
-    {
-      if (!e.Enabled)
-        continue;
-
-      if (e.CheckConditions(line, lineIndex))
-      {
-        Program.Info(e.ToString(), e.BackgroundColor, e.ForegroundColor);
-        BufferEvent(e);
-      }
-    }
-  }
   private static void CheckEvents(LAFileReader fileReader)
   {
     foreach (var e in Events)
