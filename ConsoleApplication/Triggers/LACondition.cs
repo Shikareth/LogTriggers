@@ -24,6 +24,7 @@ namespace LogAnalyzer.Triggers
         MatchingType.Simple => line.Contains(Config.Value),
         MatchingType.Regex => new Regex(Config.Value, RegexOptions.Singleline).IsMatch(line),
         MatchingType.Event => LAEventManager.EventsBuffered.Any(e => e.Label == Config.Value && e.ConditionsSatisfied && !e.Consumed),
+        MatchingType.AutoTrigger => true,
         _ => throw new Exception($"Mode: {Config.Mode} not supported"),
       };
 

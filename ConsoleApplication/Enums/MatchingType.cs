@@ -9,6 +9,7 @@
     /// </summary>
     Extended,
     Regex,
-    Event
+    Event,
+    AutoTrigger
   }
 }

@@ -9,6 +9,7 @@ namespace LogAnalyzer.Events
     public List<string> SourceLogs { get; set; } = [];
     public bool Enabled { get; set; } = true;
     public bool Ordered { get; set; } = false;
+    public bool Oneshot { get; set; } = false;
     public bool Consumed { get; private set; } = false;
     public bool ConditionsSatisfied { get; private set; } = false;
 
@@ -23,6 +24,10 @@ namespace LogAnalyzer.Events
     {
       // Got any conditions?
       if(Conditions == null || Conditions.Count <= 0)
+        return false;
+
+      // Triggered oneshot will not trigger again >:[
+      if(ConditionsSatisfied && Oneshot)
         return false;
 
       // Reset object state
