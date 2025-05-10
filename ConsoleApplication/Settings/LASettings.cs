@@ -1,6 +1,6 @@
-﻿using ConsoleApplication.Enums;
+﻿using LogAnalyzer.Enums;
 
-namespace ConsoleApplication;
+namespace LogAnalyzer;
 
 public sealed class LASettings
 {

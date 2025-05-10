@@ -1,4 +1,4 @@
-﻿using ConsoleApplication.Triggers;
+﻿using LogAnalyzer.Triggers;
 using System.Text.RegularExpressions;
 
 namespace Tests

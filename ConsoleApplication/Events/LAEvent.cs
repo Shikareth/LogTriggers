@@ -1,6 +1,6 @@
-﻿using ConsoleApplication.Triggers;
+﻿using LogAnalyzer.Triggers;
 
-namespace ConsoleApplication.Events
+namespace LogAnalyzer.Events
 {
   public class LAEvent : ICloneable
   {

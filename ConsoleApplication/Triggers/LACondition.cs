@@ -1,9 +1,9 @@
-﻿using ConsoleApplication.Enums;
-using ConsoleApplication.Events;
+﻿using LogAnalyzer.Enums;
+using LogAnalyzer.Events;
 
 using System.Text.RegularExpressions;
 
-namespace ConsoleApplication.Triggers
+namespace LogAnalyzer.Triggers
 {
   public class LACondition : ICloneable
   {

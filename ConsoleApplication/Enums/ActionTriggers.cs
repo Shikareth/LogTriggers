@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication.Enums
+namespace LogAnalyzer.Enums
 {
   public enum ActionTriggers
   {

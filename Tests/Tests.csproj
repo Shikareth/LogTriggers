@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleApplication\ConsoleApplication.csproj" />
+    <ProjectReference Include="..\ConsoleApplication\LogAnalyzer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

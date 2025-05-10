@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ConsoleApplication;
+namespace LogAnalyzer;
 
 public class LAFileReader
 {
@@ -23,7 +23,7 @@ public class LAFileReader
   public void Open()
   {
     // Build path
-    FullPath = Path.Combine([FileInfo.Path ?? Program.Settings.LogFolder, FileInfo.Filename]);
+    FullPath = Path.Combine([FileInfo.Path ?? LogAnalyzer.Settings.LogFolder, FileInfo.Filename]);
 
     if (!File.Exists(FullPath))
       throw new Exception($"File does not exist: {FileInfo.Label} @ {FullPath}");
@@ -31,7 +31,7 @@ public class LAFileReader
     FileStream = File.Open(FullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
     StreamReader = new StreamReader(FileStream, Encoding.Default);
 
-    Program.Info($"Opened log file {FileInfo.Label} @ {FullPath}");
+    LogAnalyzer.Info($"Opened log file {FileInfo.Label} @ {FullPath}");
   }
   public void Open(LAFile file)
   {
@@ -66,7 +66,7 @@ public class LAFileReader
   {
     if (FileStream == null || StreamReader == null)
     {
-      Program.Warn($"Log file {FileInfo.Label} is already closed @ {FullPath}");
+      LogAnalyzer.Warn($"Log file {FileInfo.Label} is already closed @ {FullPath}");
       return;
     }
 
@@ -87,7 +87,7 @@ public class LAFileReader
       sb.AppendLine(msg);
       sb.AppendLine(new string('*', msg.Length));
 
-      Program.ConsoleWrite(sb.ToString(), ConsoleColor.Yellow, ConsoleColor.Black);
+      LogAnalyzer.ConsoleWrite(sb.ToString(), ConsoleColor.Yellow, ConsoleColor.Black);
 
       FileStream.Seek(0, SeekOrigin.Begin);
     }
@@ -95,19 +95,19 @@ public class LAFileReader
   }
   private void ParseTimestamp(string line)
   {
-    var regex = new Regex(FileInfo.TimestampFilter ?? Program.Settings.TimestampFilter);
+    var regex = new Regex(FileInfo.TimestampFilter ?? LogAnalyzer.Settings.TimestampFilter);
 
     var match = regex.Match(line);
     if (!match.Success)
     {
-      Program.Debug($"Could not find Timestamp: [{FileInfo.Label}] {CurrentLine} @ {CurrentLineNumber}");
+      LogAnalyzer.Debug($"Could not find Timestamp: [{FileInfo.Label}] {CurrentLine} @ {CurrentLineNumber}");
       return;
     }
 
-    if (DateTime.TryParseExact(match.Value, FileInfo.TimestampFormat ?? Program.Settings.TimestampFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out DateTime timestamp))
+    if (DateTime.TryParseExact(match.Value, FileInfo.TimestampFormat ?? LogAnalyzer.Settings.TimestampFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out DateTime timestamp))
       CurrentTimestamp = timestamp;
     else
-      Program.Debug($"Could not parse Timestamp: [{FileInfo.Label}] {CurrentLine} @ {CurrentLineNumber}");
+      LogAnalyzer.Debug($"Could not parse Timestamp: [{FileInfo.Label}] {CurrentLine} @ {CurrentLineNumber}");
   }
 
   public override string ToString()

@@ -1,6 +1,6 @@
-﻿using ConsoleApplication.Enums;
+﻿using LogAnalyzer.Enums;
 
-namespace ConsoleApplication.Triggers
+namespace LogAnalyzer.Triggers
 {
 
   public class LAConfig : ICloneable

@@ -1,4 +1,4 @@
-﻿namespace ConsoleApplication.Actions;
+﻿namespace LogAnalyzer.Actions;
 
 public class LAAction
 {

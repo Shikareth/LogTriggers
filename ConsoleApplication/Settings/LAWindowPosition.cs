@@ -1,4 +1,4 @@
-﻿namespace ConsoleApplication;
+﻿namespace LogAnalyzer;
 
 public sealed class LAWindowPosition
 {
