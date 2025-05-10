@@ -1,6 +1,4 @@
-﻿using LogAnalyzer.Events;
-
-namespace LogAnalyzer;
+﻿namespace LogAnalyzer;
 
 public sealed class LAFile
 {

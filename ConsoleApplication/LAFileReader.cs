@@ -60,7 +60,7 @@ public class LAFileReader
   }
   public bool CanRead()
   {
-    return !this.StreamReader.EndOfStream;
+    return !this.StreamReader?.EndOfStream ?? false;
   }
   public void Close()
   {
@@ -77,6 +77,9 @@ public class LAFileReader
 
   private void CheckFileLength()
   {
+    if(FileStream == null)
+      throw new Exception($"Filestrem was null!! {Path.Combine(FileInfo.Path, FileInfo.Filename)}");
+
     // Check if file has regenerated -> is shorter then last time
     if (FileStream.Position > FileStream.Length)
     {
