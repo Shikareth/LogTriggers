@@ -1,5 +1,5 @@
 ﻿using LogAnalyzer.Events;
-
+using LogAnalyzer.Settings;
 using Microsoft.Extensions.Configuration;
 
 using OpenQA.Selenium;
@@ -16,7 +16,7 @@ public class LogAnalyzer
   private const string _title = "LogAnalyzer";
   public static bool Enabled { get; set; } = true;
   public static WebDriver? Driver { get; set; }
-  public static LASettings? Settings { get; set; }
+  public static LASettings? Settings { get; set; } = new();
   private static List<LAFileReader> Files { get; set; } = [];
 
   public static void Main(string[] args)
