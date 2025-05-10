@@ -65,13 +65,6 @@ public class LogAnalyzer
         _ => throw new Exception($"Not supported browser: {Settings.Browser}"),
       };
       
-      if (Driver != null)
-      {
-        Driver.Manage().Window.Position = new System.Drawing.Point(2000, 0);
-        Driver.Manage().Window.Maximize();
-        Driver.Navigate().GoToUrl(Settings.BrowserEntrySite);
-      }
-
       // Open files
       foreach (var file in Settings.LogFiles)
       {
