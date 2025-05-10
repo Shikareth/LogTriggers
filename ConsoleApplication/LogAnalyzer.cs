@@ -26,7 +26,7 @@ public class LogAnalyzer
     // Setup clean application stop
     Console.CancelKeyPress += (sender, args) =>
     {
-      Console.WriteLine($"{args.SpecialKey} pressed. Cleaning up ...");
+      ConsoleWrite($"{args.SpecialKey} pressed. Cleaning up ...");
 
       // Set the Cancel property to true to prevent the process from terminating prematurely.
       args.Cancel = true;
