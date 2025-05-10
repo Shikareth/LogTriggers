@@ -16,7 +16,7 @@ public class LogAnalyzer
   private const string _title = "LogAnalyzer";
   public static bool Enabled { get; set; } = true;
   public static WebDriver? Driver { get; set; }
-  public static LASettings? Settings { get; set; } = new();
+  public static LASettings Settings { get; set; } = new();
   private static List<LAFileReader> Files { get; set; } = [];
 
   public static void Main(string[] args)
@@ -43,16 +43,11 @@ public class LogAnalyzer
         .Build();
 
       // Enable throwing error on invalid configuration
-      Action<BinderOptions> getOptions = (o) => o.ErrorOnUnknownConfiguration = true;
+      static void getOptions(BinderOptions o) => o.ErrorOnUnknownConfiguration = true;
 
-      Settings = appsettings.GetRequiredSection("Settings").Get<LASettings>(getOptions);
-      LAEventManager.Events = appsettings.GetRequiredSection("Events").Get<List<LAEvent>>(getOptions);
+      Settings = appsettings.GetRequiredSection("Settings").Get<LASettings>(getOptions) ?? throw new Exception($"Settings object was NULL!!");
+      LAEventManager.Events = appsettings.GetRequiredSection("Events").Get<List<LAEvent>>(getOptions) ?? throw new Exception($"Events definition object was NULL!!");
       LAEventManager.Init();
-
-      if(Settings == null)
-      {
-        throw new Exception($"Settings object was NULL!");
-      }
 
       // Setup Selenium browser
       Driver = Settings.Browser switch
