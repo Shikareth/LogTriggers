@@ -49,7 +49,7 @@ public class LogAnalyzer
       LAEventManager.Events = appsettings.GetRequiredSection("Events").Get<List<LAEvent>>(getOptions);
       LAEventManager.Init();
 
-      if(Settings != null)
+      if(Settings == null)
       {
         throw new Exception($"Settings object was NULL!");
       }
@@ -64,7 +64,7 @@ public class LogAnalyzer
         Enums.BrowserType.None => null,
         _ => throw new Exception($"Not supported browser: {Settings.Browser}"),
       };
-
+      
       if (Driver != null)
       {
         Driver.Manage().Window.Position = new System.Drawing.Point(2000, 0);
