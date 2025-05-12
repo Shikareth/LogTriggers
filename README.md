@@ -25,22 +25,22 @@ Holds global configuration. Available options:
 
     "Settings": {
       "LogLevel": "INFO",
-      "LogFolder": "D:\\#_PROJECTS\\2024_01-BYK_Chemie\\documents\\ISSUES\\WMS_doubleLUStock\\Logs_to_be_checked\\20250413",
+      "LogFolder": "Logs_to_be_checked\\20250413",
       "TimestampFormat": "yyyy-MM-dd HH:mm:ss.FFFF",
       "TimestampFilter": "(\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+\\.\\d+)",
       "UpdateDelay": 500,
       "LogFiles": [
         {
-          "Label": "WMS",
-          "Filename": "MWMS.20250413.0.log"
+          "Label": "File1",
+          "Filename": "File1.log"
         },
         {
-          "Label": "MFC",
-          "Filename": "MFlow.20250413.0.log"
+          "Label": "File2",
+          "Filename": "File2.log"
         },
         {
-          "Label": "SAP",
-          "Filename": "SAPConnector.20250413.0.log",
+          "Label": "File3",
+          "Filename": "File3.log",
           "TimestampFormat": "yyyy-MM-dd HH:mm:ss.FFFF",
           "TimestampFilter": "(\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+\\.\\d+)"
         }
