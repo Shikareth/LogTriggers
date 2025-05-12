@@ -1,4 +1,4 @@
-﻿namespace ConsoleApplication.Enums
+﻿namespace LogAnalyzer.Enums
 {
   public enum LogLevel{
     NONE = 0,

@@ -1,4 +1,4 @@
-﻿namespace ConsoleApplication.Events;
+﻿namespace LogAnalyzer.Events;
 
 public static class LAEventManager
 {
@@ -22,8 +22,8 @@ public static class LAEventManager
 
   public static void Init()
   {
-    if (Program.Settings != null && Program.Settings.LogFiles.Count > 0)
-      _maxLogfileLabelLength = Program.Settings.LogFiles.Select(x => x.Label).OrderByDescending(x => x.Length).First().Length;
+    if (LogAnalyzer.Settings != null && LogAnalyzer.Settings.LogFiles.Count > 0)
+      _maxLogfileLabelLength = LogAnalyzer.Settings.LogFiles.Select(x => x.Label).OrderByDescending(x => x.Length).First().Length;
 
     if (Events != null && Events.Count > 0)
       _maxEventLabelLength = Events.Select(x => x.Label).OrderByDescending(x => x.Length).First().Length;
@@ -33,7 +33,7 @@ public static class LAEventManager
   {
     if (fileReader.CurrentLine == null)
     {
-      Program.Warn($"Cannot parse null: {fileReader.FileInfo.Label} @ line: {fileReader.CurrentLineNumber}");
+      LogAnalyzer.Warn($"Cannot parse null: {fileReader.FileInfo.Label} @ line: {fileReader.CurrentLineNumber}");
       return;
     }
 
@@ -59,7 +59,7 @@ public static class LAEventManager
       {
         var logfileLabel = fileReader.FileInfo.Label + new string(' ', _maxLogfileLabelLength - fileReader.FileInfo.Label.Length);
 
-        Program.Info($"[{logfileLabel}] " + e.ToString(), e.BackgroundColor, e.ForegroundColor);
+        LogAnalyzer.Info($"[{logfileLabel}] " + e.ToString(), e.BackgroundColor, e.ForegroundColor);
         BufferEvent(e);
       }
     }

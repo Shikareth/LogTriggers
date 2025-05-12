@@ -1,6 +1,4 @@
-﻿using ConsoleApplication.Events;
-
-namespace ConsoleApplication;
+﻿namespace LogAnalyzer;
 
 public sealed class LAFile
 {

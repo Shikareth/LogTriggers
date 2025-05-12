@@ -1,4 +1,4 @@
-﻿namespace ConsoleApplication.Enums
+﻿namespace LogAnalyzer.Enums
 {
   public enum MatchingType
   {
@@ -9,6 +9,7 @@
     /// </summary>
     Extended,
     Regex,
-    Event
+    Event,
+    AutoTrigger
   }
 }

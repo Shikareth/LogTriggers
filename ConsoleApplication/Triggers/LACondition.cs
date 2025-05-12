@@ -1,13 +1,14 @@
-﻿using ConsoleApplication.Enums;
-using ConsoleApplication.Events;
+﻿using LogAnalyzer.Enums;
+using LogAnalyzer.Events;
 
 using System.Text.RegularExpressions;
 
-namespace ConsoleApplication.Triggers;
-public class LACondition : ICloneable
+namespace LogAnalyzer.Triggers
 {
-  public required string Label { get; set; }
-  public required LAConfig Config { get; set; }
+  public class LACondition : ICloneable
+  {
+    public required string Label { get; set; }
+    public required LAConfig Config { get; set; }
 
   public AdditionalOptions Options { get; set; } = AdditionalOptions.MatchCase;
   public List<LAVariable> Variables { get; set; } = [];
@@ -19,13 +20,14 @@ public class LACondition : ICloneable
     if (string.IsNullOrEmpty(Config?.Value))
       throw new Exception($"{nameof(LACondition)} matching value cannot be null or empty");
 
-    Satisfied = Config.Mode switch
-    {
-      MatchingType.Simple => line.Contains(Config.Value),
-      MatchingType.Regex => new Regex(Config.Value, RegexOptions.Singleline).IsMatch(line),
-      MatchingType.Event => LAEventManager.EventsBuffered.Any(e => e.Label == Config.Value && e.ConditionsSatisfied && !e.Consumed),
-      _ => throw new Exception($"Mode: {Config.Mode} not supported"),
-    };
+      Satisfied = Config.Mode switch
+      {
+        MatchingType.Simple => line.Contains(Config.Value),
+        MatchingType.Regex => new Regex(Config.Value, RegexOptions.Singleline).IsMatch(line),
+        MatchingType.Event => LAEventManager.EventsBuffered.Any(e => e.Label == Config.Value && e.ConditionsSatisfied && !e.Consumed),
+        MatchingType.AutoTrigger => true,
+        _ => throw new Exception($"Mode: {Config.Mode} not supported"),
+      };
 
     if (Satisfied)
       foreach (var variable in Variables)
