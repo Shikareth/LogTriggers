@@ -1,4 +1,6 @@
-﻿namespace LogAnalyzer.Events;
+﻿using LogAnalyzer.File;
+
+namespace LogAnalyzer.Events;
 
 public static class LAEventManager
 {

@@ -1,5 +1,9 @@
-﻿using LogAnalyzer.Events;
+﻿using System.Text;
+
+using LogAnalyzer.Events;
+using LogAnalyzer.File;
 using LogAnalyzer.Settings;
+
 using Microsoft.Extensions.Configuration;
 
 using OpenQA.Selenium;
@@ -7,13 +11,13 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
-using System.Text;
 
 namespace LogAnalyzer;
 
-public class LogAnalyzer
+public partial class LogAnalyzer
 {
   private const string _title = "LogAnalyzer";
+  private static Throbber _throbber = new(["-", "\\", "|", "/"]);
   public static bool Enabled { get; set; } = true;
   public static WebDriver? Driver { get; set; }
   public static LASettings Settings { get; set; } = new();
@@ -59,7 +63,7 @@ public class LogAnalyzer
         Enums.BrowserType.None => null,
         _ => throw new Exception($"Not supported browser: {Settings.Browser}"),
       };
-      
+
       // Open files
       foreach (var file in Settings.LogFiles)
       {
@@ -85,6 +89,7 @@ public class LogAnalyzer
 
         // Deleay read to save resources
         Thread.Sleep(Settings.UpdateDelay);
+        Console.Title = $"{_title}[{_throbber.Next()}]";
       }
     }
     catch (Exception ex)
@@ -96,7 +101,7 @@ public class LogAnalyzer
       // Close files
       foreach (var file in Files)
         file.Close();
-      
+
       Info("Press any key to exit ...");
     }
   }
@@ -149,4 +154,5 @@ public class LogAnalyzer
     return report.ToString();
   }
 }
+
 
