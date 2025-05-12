@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace LogAnalyzer;
+namespace LogAnalyzer.File;
 
 public class LAFileReader
 {
@@ -45,7 +45,7 @@ public class LAFileReader
       return;
 
     CheckFileLength();
- 
+
     // Read log file
     if (StreamReader.EndOfStream)
       return;
@@ -60,7 +60,7 @@ public class LAFileReader
   }
   public bool CanRead()
   {
-    return !this.StreamReader?.EndOfStream ?? false;
+    return !StreamReader?.EndOfStream ?? false;
   }
   public void Close()
   {
@@ -77,7 +77,7 @@ public class LAFileReader
 
   private void CheckFileLength()
   {
-    if(FileStream == null)
+    if (FileStream == null)
       throw new Exception($"Filestrem was null!! {Path.Combine(FileInfo.Path, FileInfo.Filename)}");
 
     // Check if file has regenerated -> is shorter then last time

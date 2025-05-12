@@ -1,4 +1,4 @@
-﻿namespace LogAnalyzer;
+﻿namespace LogAnalyzer.File;
 
 public sealed class LAFile
 {

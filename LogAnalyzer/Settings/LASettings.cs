@@ -1,4 +1,5 @@
 ﻿using LogAnalyzer.Enums;
+using LogAnalyzer.File;
 
 namespace LogAnalyzer.Settings;
 
