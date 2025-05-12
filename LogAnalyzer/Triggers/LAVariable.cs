@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ConsoleApplication.Triggers;
+namespace LogAnalyzer.Triggers;
 
 public class LAVariable : ICloneable
 {
@@ -17,7 +17,7 @@ public class LAVariable : ICloneable
 
     if (!match.Success)
     {
-      Program.Warn($"Could not match value: {Label}");
+      LogAnalyzer.Warn($"Could not match value: {Label}");
       return;
     }
     
