@@ -1,6 +1,4 @@
-﻿using LogAnalyzer.Triggers;
-
-using LogAnalyzer.Enums;
+﻿using LogAnalyzer.Enums;
 using LogAnalyzer.Events;
 
 using System.Text.RegularExpressions;
@@ -19,7 +17,7 @@ public class LACondition : ICloneable
 
   public bool CheckCondition(string line)
   {
-    if (string.IsNullOrEmpty(Config?.Value))
+    if (Config.Mode != MatchingType.AutoTrigger && string.IsNullOrEmpty(Config?.Value))
       throw new Exception($"{nameof(LACondition)} matching value cannot be null or empty");
 
     Satisfied = Config.Mode switch

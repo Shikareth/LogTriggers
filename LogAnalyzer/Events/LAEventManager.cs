@@ -38,7 +38,6 @@ public static class LAEventManager
     }
 
     CheckEvents(fileReader);
-    //CheckEvents(fileReader.CurrentLine, fileReader.CurrentLineNumber);
   }
   public static LAEvent? GetLastEvent(string label)
   {
@@ -52,7 +51,7 @@ public static class LAEventManager
       if (!e.Enabled)
         continue;
 
-      if (!e.SourceLogs.Contains(fileReader.FileInfo.Label))
+      if (e.SourceLogs.Count > 0 && !e.SourceLogs.Contains(fileReader.FileInfo.Label))
         continue;
 
       if (e.CheckConditions(fileReader.CurrentLine, fileReader.CurrentLineNumber))

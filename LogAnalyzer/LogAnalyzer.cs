@@ -134,7 +134,7 @@ public class LogAnalyzer
     Console.BackgroundColor = lastBG;
     Console.ForegroundColor = lastFG;
   }
-  private static string ParseException(Exception? ex)
+  internal static string ParseException(Exception? ex)
   {
     var report = new StringBuilder();
 

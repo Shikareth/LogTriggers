@@ -1,4 +1,7 @@
-﻿using LogAnalyzer.Triggers;
+﻿using System.Text.Json.Serialization;
+
+using LogAnalyzer.Actions;
+using LogAnalyzer.Triggers;
 
 namespace LogAnalyzer.Events
 {
@@ -6,6 +9,7 @@ namespace LogAnalyzer.Events
   {
     public required string Label { get; set; }
     public List<LACondition> Conditions { get; set; } = [];
+    public List<LAAction> Actions { get; set; } = [];
     public List<string> SourceLogs { get; set; } = [];
     public bool Enabled { get; set; } = true;
     public bool Ordered { get; set; } = false;
@@ -13,7 +17,9 @@ namespace LogAnalyzer.Events
     public bool Consumed { get; private set; } = false;
     public bool ConditionsSatisfied { get; private set; } = false;
 
+    [JsonIgnore]
     public int CurrentCondition { get; private set; } = 0;
+    [JsonIgnore]
     public int SatisfiedAtLine { get; private set; }
 
     public string Line { get; private set; } = string.Empty;
@@ -58,6 +64,10 @@ namespace LogAnalyzer.Events
           Line = (string)line.Clone();
         }
       }
+
+      if (ConditionsSatisfied)
+        foreach (var action in Actions)
+          action.Execute();
 
       return ConditionsSatisfied;
     }
