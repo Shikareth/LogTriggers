@@ -11,6 +11,7 @@ public class LAAction
 
   public required string Label { get; set; }
   public required string Command { get; set; }
+  public bool Quiet { get; set; } = false;
   public List<string>? Arguments { get; set; }
 
 
@@ -21,9 +22,9 @@ public class LAAction
       var proc = Process.Start(
         new ProcessStartInfo(Command, Arguments ?? [])
         {
-          CreateNoWindow = false,
+          CreateNoWindow = !Quiet,
           RedirectStandardOutput = false,
-          WindowStyle = ProcessWindowStyle.Normal
+          WindowStyle = Quiet ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal
         }
       );
 
